@@ -294,9 +294,12 @@ public class PaymentIntentCreateParams extends UseePayObject {
          * 	付款卡有效年
          */
         private String expirationYear;
-
+        /**
+         * CVV
+         */
+        private String cvv;
         public PayerInfo(String paymentMethod, String authorizationMethod, Address billingAddress, String firstName, String lastName, String threeDS2RequestData) {
-            this(paymentMethod,authorizationMethod,billingAddress,firstName,lastName,threeDS2RequestData,null,null,null);
+            this(paymentMethod,authorizationMethod,billingAddress,firstName,lastName,threeDS2RequestData,null,null,null,null);
         }
     }
 

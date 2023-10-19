@@ -6,6 +6,7 @@ import com.useepay.exception.InvalidRequestException;
 import com.useepay.exception.UseePayException;
 import com.useepay.net.RequestOptions;
 import com.useepay.param.PaymentIntentCreateParams;
+import com.useepay.util.HttpClientUtils;
 import com.useepay.util.SecurityUtils;
 import lombok.*;
 
@@ -32,6 +33,7 @@ public class PaymentIntent extends UseePayObject{
     private String amount;
     private String redirectUrl;
     private String resultCode;
+
     public static PaymentIntent create(PaymentIntentCreateParams params) throws UseePayException {
         return create(params, (RequestOptions)null);
     }
@@ -42,7 +44,10 @@ public class PaymentIntent extends UseePayObject{
         PaymentInfo paymentInfo = buildPaymentInfo(params);
         Map<String,Object> paymentMap = paramsToMap(paymentInfo.toJson());
         String sign = SecurityUtils.sign(paymentMap);
+        System.out.println(sign);
         paymentMap.put("sign",sign);
+        String response = HttpClientUtils.doPost(UseePay.getApiBase()+path,paymentMap);
+        System.out.println(response);
         return null;
     }
 

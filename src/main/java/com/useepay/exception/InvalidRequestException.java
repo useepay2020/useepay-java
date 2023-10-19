@@ -15,4 +15,9 @@ public class InvalidRequestException extends UseePayException {
     super(errorCode, requestId,statusCode,e);
     this.param = param;
   }
+
+  public InvalidRequestException(String code,String message) {
+    super(code, message,null,null,null);
+    this.param = null;
+  }
 }

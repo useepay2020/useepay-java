@@ -1,5 +1,7 @@
 package com.useepay;
 
+import com.useepay.model.SignType;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -29,11 +31,11 @@ public abstract class UseePay {
 
   public static String getApiBase() {
     if(Objects.isNull(environment)){
-       throw new RuntimeException("请设置运行环境:UAT or PRODUCTION");
+       throw new RuntimeException("请设置运行环境:SANDBOX or PRODUCTION");
     }
     APIEnvironment apiEnvironment = APIEnvironment.get(environment);
     if(Objects.isNull(apiEnvironment)) {
-      throw new RuntimeException("不支持的运行环境,仅支持UAT or PRODUCTION");
+      throw new RuntimeException("不支持的运行环境,仅支持SANDBOX or PRODUCTION");
     }
     return apiEnvironment.getApiBase();
   }
@@ -109,16 +111,16 @@ public abstract class UseePay {
    *
    * @param appId ID of your application (e.g. "myawesomeapp.info")
    * @param appKey
-   * @param signType sign ar (e.g. "https://myawesomeapp.info")
+   * @param signType sign ar (e.g. "MD5")
    * @param merchantNo Your UseePay Merchant NO (e.g. "500000000001111111")
    */
-  public static void setAppInfo(String appId, String appKey, String signType, String merchantNo) {
+  public static void setAppInfo(String appId, String appKey, SignType signType, String merchantNo) {
     if (appInfo == null) {
       appInfo = new HashMap<String, String>();
     }
     appInfo.put("appId", appId);
     appInfo.put("appKey", appKey);
-    appInfo.put("signType", signType);
+    appInfo.put("signType", signType.name());
     appInfo.put("merchantNo", merchantNo);
   }
 

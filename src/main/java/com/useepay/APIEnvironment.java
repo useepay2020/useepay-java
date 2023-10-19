@@ -4,7 +4,7 @@ package com.useepay;
  * API的环境配置
  */
 public enum APIEnvironment {
-    SANDBOX("UAT","https://pay-gateway1.uat.useepay.com"),
+    SANDBOX("SANDBOX","https://pay-gateway1.uat.useepay.com"),
     PRODUCTION("PRODUCTION","https://pay-gateway.useepay.com");
     private String env;
     private String apiBase;
