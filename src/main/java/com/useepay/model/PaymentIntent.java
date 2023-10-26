@@ -13,6 +13,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @BelongsProject: useepay-java
@@ -29,10 +30,66 @@ import java.util.Map;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class PaymentIntent extends UseePayObject{
-
+    /**
+     * 金额
+     */
     private String amount;
-    private String redirectUrl;
+    /**
+     * 业务返回码
+     * 判断交易是否成功 请参考业务结果码
+     */
     private String resultCode;
+    /**
+     * 签名
+     */
+    private String sign;
+    /**
+     * 错误返回码
+     * 用于展示给消费者具体的错误信息，可参考错误码页面
+     */
+    private String errorCode;
+    /**
+     * 商户订单号
+     */
+    private String transactionId;
+    /**
+     * 错误返回信息
+     */
+    private String errorMsg;
+    /**
+     * 当resultCode=received时存在
+     */
+    private String token;
+    /**
+     * 交易类型
+     * pay/authorization
+     */
+    private String transactionType;
+    /**
+     * UseePay的业务流水号
+     */
+    private String reference;
+    /**
+     *
+     */
+    private String echoParam;
+    /**
+     * 签名类型
+     */
+    private String signType;
+    /**
+     * 币种
+     */
+    private String currency;
+    /**
+     * 商户号
+     */
+    private String merchantNo;
+    /**
+     *
+     */
+    private String redirectUrl;
+
 
     public static PaymentIntent create(PaymentIntentCreateParams params) throws UseePayException {
         return create(params, (RequestOptions)null);
@@ -44,11 +101,12 @@ public class PaymentIntent extends UseePayObject{
         PaymentInfo paymentInfo = buildPaymentInfo(params);
         Map<String,Object> paymentMap = paramsToMap(paymentInfo.toJson());
         String sign = SecurityUtils.sign(paymentMap);
-        System.out.println(sign);
         paymentMap.put("sign",sign);
         String response = HttpClientUtils.doPost(UseePay.getApiBase()+path,paymentMap);
         System.out.println(response);
-        return null;
+        if(Objects.isNull(response))
+            return null;
+        return JSON.parseObject(response,PaymentIntent.class);
     }
 
     /**

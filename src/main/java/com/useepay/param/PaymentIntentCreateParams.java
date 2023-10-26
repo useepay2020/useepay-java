@@ -1,5 +1,6 @@
 package com.useepay.param;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.useepay.model.UseePayObject;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -298,9 +299,91 @@ public class PaymentIntentCreateParams extends UseePayObject {
          * CVV
          */
         private String cvv;
-        public PayerInfo(String paymentMethod, String authorizationMethod, Address billingAddress, String firstName, String lastName, String threeDS2RequestData) {
-            this(paymentMethod,authorizationMethod,billingAddress,firstName,lastName,threeDS2RequestData,null,null,null,null);
+        /**
+         * 第三方
+         */
+        @JSONField(serialize = false)
+        private ThreeDS2Request threeDS2Request;
+
+        public PayerInfo(String paymentMethod, String authorizationMethod, Address billingAddress, String firstName, String lastName, ThreeDS2Request threeDS2Request) {
+            this(paymentMethod,authorizationMethod,billingAddress,firstName,lastName,null == threeDS2Request ? null:threeDS2Request.toJson()
+                    ,null,null,null,null,threeDS2Request);
         }
+
+        public String getThreeDS2RequestData() {
+            return null == threeDS2Request ? null:threeDS2Request.toJson();
+        }
+
+        public void setThreeDS2RequestData(String threeDS2RequestData) {
+            this.threeDS2RequestData = threeDS2RequestData;
+        }
+    }
+
+    /**
+     * 3ds参数对象。强制走3ds时必传
+     */
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @EqualsAndHashCode(callSuper = false)
+    public static class ThreeDS2Request extends UseePayObject{
+        /**
+         * 1.app 2. browser
+         */
+        private String deviceChannel;
+        /**
+         * 浏览器 accept header 的值
+         */
+        private String acceptHeader;
+        /**
+         * 用户浏览器的颜色深度，单位是位/像素。 可接受的值：1、4、8、15、16、24、30、32、48
+         */
+        private String colorDepth;
+        /**
+         * 用户浏览器是否支持 Java 执行：true\false
+         */
+        private String javaEnabled;
+        /**
+         * 用户浏览器是否支持 javaScript 执行：true\false。如果不传，默认为支持
+         */
+        private String javaScriptEnabled;
+        /**
+         * 用户浏览器语言
+         */
+        private String language;
+        /**
+         * 用户浏览器屏幕高度，单位是位/像素
+         */
+        private String screenHeight;
+        /**
+         * 用户浏览器屏幕高度，单位是位/像素
+         */
+        private String screenWidth;
+        /**
+         * 用户浏览器时间与 UTC 时间之差，单位是分钟
+         */
+        private String timeZoneOffset;
+        /**
+         * 用户浏览器代理
+         */
+        private String userAgent;
+        /**
+         * 3ds挑战窗口大小,可接受的值:1. 250x400 2. 390x400 3. 500x600 4. 500x600 5. full_screen
+         */
+        private String challengeWindowSize;
+        /**
+         * 3ds挑战偏好设置,可接受的值:1. no_preference: Don't have any preferences related to the Challengeflow
+         * 2. no_challenge_requested: I prefer that a Challenge flow does not take place
+         * 3. preference: A request for the Challenge flow to take place
+         * 4. mandate: A Challenge flow must take place to fulfill a mandate
+         */
+        private String challengeIndicator;
+        /**
+         * 3D回调URL
+         */
+        private String threeDSMethodCallbackUrl;
     }
 
     @Getter

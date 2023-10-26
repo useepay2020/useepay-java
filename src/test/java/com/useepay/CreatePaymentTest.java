@@ -1,9 +1,10 @@
 package com.useepay;
 
-import com.useepay.exception.UseePayException;
+import com.alibaba.fastjson.JSON;
 import com.useepay.model.PaymentIntent;
 import com.useepay.model.SignType;
 import com.useepay.param.PaymentIntentCreateParams;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -105,6 +106,22 @@ public class CreatePaymentTest {
                  * TODO:3ds请求参数
                  */
                 .build();
+        //如何需要走3D的请构建3D请求参数
+        PaymentIntentCreateParams.ThreeDS2Request threeDS2Request = PaymentIntentCreateParams.ThreeDS2Request.builder()
+                .challengeWindowSize("250x400")
+                .challengeIndicator("preference")
+                .threeDSMethodCallbackUrl("http://amber.vaiwan.com/gateway-test/threeDSMethodCallbackUrl.html")
+                .deviceChannel("browser")
+                .acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+                .colorDepth("12")
+                .javaEnabled("true")
+                .language("en")
+                .screenHeight("300")
+                .screenWidth("300")
+                .timeZoneOffset("-180")
+                .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36")
+                .build();
+        payerInfo.setThreeDS2Request(threeDS2Request);
         //用户信息
         PaymentIntentCreateParams.UserInfo userInfo = PaymentIntentCreateParams.UserInfo.builder()
                 .ip("103.25.65.178")
@@ -113,7 +130,7 @@ public class CreatePaymentTest {
                 .build();
 
         PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-                .transactionId("m0000000000012201") //商户订单号，建议每次请求的 transactionId 唯一，有利于后续订单查询和对账
+                .transactionId("m0000000000012211") //商户订单号，建议每次请求的 transactionId 唯一，有利于后续订单查询和对账
                 .transactionType("pay")//交易类型
                 .amount("1234")//订单金额（必须大于 0），单位为对应币种的最小货币单位(详见 ISO 4217)参见 https://openapi-useepay.apifox.cn/doc-1810037
                               //传给 UseePay 的 amount 需要做一次转换，假设你的网站使用的货币单位为 USD, 商品价格为 12.11, 那么你应该将价格转成 12.11 * 10^2(USD 的最小单位是2),
@@ -132,9 +149,11 @@ public class CreatePaymentTest {
 
         try {
             //生产支付
+            //System.out.println("params="+params.toJson());
             PaymentIntent paymentIntent = PaymentIntent.create(params);
+            System.out.println("paymentIntent="+ JSON.toJSONString(paymentIntent));
 
-        } catch (UseePayException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
