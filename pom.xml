@@ -3,7 +3,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    <name>UseePay Java JDK</name>
+    <description>UseePay Java JDK for payment</description>
     <groupId>com.useepay</groupId>
     <artifactId>useepay-java</artifactId>
     <version>1.0.0</version>
@@ -14,6 +15,39 @@
         <lombok.version>1.18.10</lombok.version>
         <fastjson.version>1.2.75</fastjson.version>
     </properties>
+    <!--开源协议-->
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+
+    <!--项目地址-->
+    <url>https://github.com/useepay2020/useepay-java</url>
+
+    <!--开发者信息-->
+    <developers>
+        <developer>
+            <id>useepay</id>
+            <name>useepay</name>
+            <email>technology@useepay.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+
+
+    <!--项目在github或其它托管平台的地址-->
+    <scm>
+        <connection>https://github.com/useepay2020/useepay-java.git</connection>
+        <developerConnection>scm:git:ssh://github.com:useepay2020/useepay-java.git</developerConnection>
+        <url>https://github.com/useepay2020/useepay-java/tree/main</url>
+    </scm>
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
